@@ -31,9 +31,14 @@ public class Main {
                 case 0 -> continueLoop = false;
                 case 1 -> {
                     singleThreadedSolution();
+                    getFactors();
                     showMenu();
                 }
-                case 2 -> executorSolution();
+                case 2 -> {
+                    executorSolution();
+                    getFactors();
+                    showMenu();
+                }
                 case 3 -> streamSolution();
                 case 4 -> distributedSolution();
                 case 5 -> timer();
@@ -54,20 +59,7 @@ public class Main {
                 0) Quit""");
     }
 
-    /**
-     * Utilizes a single threaded solver to compute the factors of all integers from 2 to 100,000.
-     * Upon calling, this function takes some time to return control to the user.
-     * Afterwards, the function allows the user to view the factors of any integer from 2 to 100,000
-     * via a menu.
-     * @throws IOException  If buffered reader throws an IOException
-     */
-    private static void singleThreadedSolution() throws IOException {
-        if(!(factorizationSolver instanceof singleThreadedSolver)) {
-            factorizationSolver = new singleThreadedSolver();
-        }
-
-        System.out.println("Welcome to the Single Threaded Factorizer!\n" +
-                "Please enter a number and we will return the factors of that number and a note if that number is prime or not. Enter 0 to return to the main menu.");
+    private static void getFactors() throws IOException {
         boolean continueLoop = true;
         int toFactor;
 
@@ -97,17 +89,38 @@ public class Main {
                         System.out.println(toFactor + " is not a prime number.");
                     }
                 } catch (InvalidIndexException e) {
-                    System.out.println(e);
+                    System.out.println("Please enter a number between 2 and 100,000 (inclusive)");
                 }
             }
         }
     }
 
     /**
-     * Currently non-functional.
+     * Utilizes a single threaded solver to compute the factors of all integers from 2 to 100,000.
+     * The function also allows the user to view the factors of any integer from 2 to 100,000
+     * via a menu.
+     */
+    private static void singleThreadedSolution() {
+        if(!(factorizationSolver instanceof singleThreadedSolver)) {
+            factorizationSolver = new singleThreadedSolver();
+        }
+
+        System.out.println("Welcome to the Single Threaded Factorizer!\n" +
+                "Please enter a number and we will return the factors of that number and a note if that number is prime or not. Enter 0 to return to the main menu.");
+    }
+
+    /**
+     * Utilizes an executor based multithreaded solution to factor
+     * every integer from 2 to 100,000. After calculating the factors,
+     * the user can repeatedly show the factors of new numbers using a menu.
      */
     private static void executorSolution() {
-        System.out.println("This solver is not implemented yet.");
+        if(!(factorizationSolver instanceof executorSolver)) {
+            factorizationSolver = new executorSolver();
+        }
+
+        System.out.println("Welcome to the Executor Factorizer!\n" +
+                "Please enter a number and we will return the factors of that number and a note if that number is prime or not. Enter 0 to return to the main menu.");
     }
 
     /**
