@@ -5,21 +5,23 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class executorSolver extends Solver {
-    protected void solve() {
+    protected void solve() throws RuntimeException {
         System.out.println("Generating factors. Please wait...");
 
-        factorArray = new ArrayList[MAX_VALUE + 1];
-
         startTime = System.nanoTime();
+
+        int arrayLength = MAX_VALUE + 1;
+        factorArray = new ArrayList[arrayLength];
         int threadCount = Runtime.getRuntime().availableProcessors();
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
 
-        int chunkSize = (MAX_VALUE + 1) / threadCount;
+        // Calculate amount of work each thread must do
+        int chunkSize = arrayLength / threadCount;
         Future<?>[] futures = new Future<?>[threadCount];
 
         for(int i = 0; i < threadCount; i++) {
             int start = i * chunkSize;
-            int end = (i == threadCount - 1)? (MAX_VALUE + 1):(start + chunkSize);
+            int end = (i == threadCount - 1)? arrayLength:(start + chunkSize);
 
             futures[i] = executor.submit(() -> generateFactors(start, end));
         }
@@ -28,7 +30,7 @@ public class executorSolver extends Solver {
             try {
                 future.get();
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+                throw new RuntimeException("An error occurred while executing the solver. Please try again.");
             }
         }
 
@@ -44,7 +46,6 @@ public class executorSolver extends Solver {
             factors = new ArrayList<>();
             factors.add(i);
 
-            // Note that any number > n / 2 cannot possibly be a factor of n.
             for(int j = i / 2; j > 1; j--) {
                 if(i % j == 0) {
                     factors.add(j);

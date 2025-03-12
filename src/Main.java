@@ -20,7 +20,7 @@ public class Main {
         int selectedOption;
 
         while(continueLoop) {
-            System.out.print("\nMake a selection: ");
+            System.out.print("\nPlease make a selection now: ");
             try {
                 selectedOption = Integer.parseInt(stdin.readLine().trim());
             } catch (NumberFormatException e) {
@@ -66,7 +66,7 @@ public class Main {
         ArrayList<Integer> factors;
 
         while(continueLoop) {
-            System.out.print("\nPlease enter a number to get the factors of, or 0 to quit: ");
+            System.out.print("\nPlease enter an integer from 2-100,000 to get the factors of, or 0 to quit: ");
 
             try {
                 toFactor = Integer.parseInt(stdin.readLine().trim());
@@ -88,8 +88,8 @@ public class Main {
                     } else {
                         System.out.println(toFactor + " is not a prime number.");
                     }
-                } catch (InvalidIndexException e) {
-                    System.out.println("Please enter a number between 2 and 100,000 (inclusive)");
+                } catch (InvalidIndexException | RuntimeException e) {
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -146,7 +146,7 @@ public class Main {
             try {
                 System.out.println("The previous factorization took " + factorizationSolver.getSolveTime() + " seconds.");
             } catch (RuntimeException e) {
-                System.out.println("Please run a solver first.");
+                System.out.println(e.getMessage());
             }
         } catch(NullPointerException e) {
             System.out.println("Please select a solver first.");

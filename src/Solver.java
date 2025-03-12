@@ -21,9 +21,9 @@ public abstract class Solver {
      */
     public ArrayList<Integer> getFactorsOf(int index) throws InvalidIndexException {
         if (index < 2) {
-            throw new InvalidIndexException("Index too small for solver.");
+            throw new InvalidIndexException("This index is too small for the solver. Valid indices are greater than or equal to 2, but less than or equal to 100,000.");
         } else if (index > MAX_VALUE) {
-            throw new InvalidIndexException("Index too large for solver.");
+            throw new InvalidIndexException("This index is too large for the solver. Valid indices are greater than or equal to 2, but less than or equal to 100,000.");
         } else {
             ArrayList<Integer> result;
 
@@ -46,7 +46,7 @@ public abstract class Solver {
         float result = (float) ((endTime - startTime) / 1000000000);
 
         if(result < 0) {
-            throw new RuntimeException();
+            throw new RuntimeException("A solver has not been run yet. Please run a solver first.");
         }
 
         return result;

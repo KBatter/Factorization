@@ -8,10 +8,12 @@ public class singleThreadedSolver extends Solver {
      */
     protected void solve() {
         System.out.println("Generating factors. Please wait...");
+
+        startTime = System.nanoTime();
+
         factorArray = new ArrayList[MAX_VALUE + 1];
         ArrayList<Integer> factors;
 
-        startTime = System.nanoTime();
         for(int i = 2; i <= MAX_VALUE; i++) {
             factors = new ArrayList<>();
             factors.add(i);
