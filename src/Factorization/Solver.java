@@ -1,4 +1,6 @@
+package Factorization;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Superclass for all solvers.
@@ -6,12 +8,12 @@ import java.util.ArrayList;
  */
 
 public abstract class Solver {
-    protected ArrayList<Integer>[] factorArray;
     protected long startTime = 0;
     protected long endTime = -1;
-    protected final int MAX_VALUE = 100000;
+    protected final int MAX_VALUE = 1000000;
+    protected HashMap<Integer, ArrayList<Integer>> factorArray = new HashMap<>(MAX_VALUE + 1);
 
-    protected void solve() {}
+    public abstract void solve();
 
     /**
      * This method gets the factors associated with a number, index.
@@ -25,15 +27,7 @@ public abstract class Solver {
         } else if (index > MAX_VALUE) {
             throw new InvalidIndexException("This index is too large for the solver. Valid indices are greater than or equal to 2, but less than or equal to 100,000.");
         } else {
-            ArrayList<Integer> result;
-
-            if(factorArray == null) {
-                solve();
-            }
-
-            result = factorArray[index];
-
-            return result;
+            return factorArray.get(index);
         }
     }
 
@@ -42,8 +36,8 @@ public abstract class Solver {
      * @return  the solving time in seconds (float).
      * @throws RuntimeException if the solver has not been run yet.
      */
-    public float getSolveTime() throws RuntimeException {
-        float result = (float) ((endTime - startTime) / 1000000000);
+    public long getSolveTime() throws RuntimeException {
+        long result = endTime - startTime;
 
         if(result < 0) {
             throw new RuntimeException("A solver has not been run yet. Please run a solver first.");
